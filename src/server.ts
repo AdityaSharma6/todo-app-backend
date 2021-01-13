@@ -1,9 +1,13 @@
 import express from 'express';
 import connection from './utils/database';
+import itemsRouter from './resources/item/item.router';
 
 require('dotenv').config();
 
 const app = express();
+const mainRouter = express.Router();
+
+app.use('/items', itemsRouter);
 
 const startServer = async () => {
   console.log('Starting Server Process...');
