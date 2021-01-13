@@ -4,11 +4,11 @@
   "description": "",
   "scripts": {
     "format": "prettier --write 'src/*.ts' 'src/**/*.ts'",
-    "compile": "tsc",
-    "watch-compile": "tsc -w",
-    "deploy": "node dist/server.js",
-    "watch-deploy": "nodemon dist/server.js",
-    "server": "concurrently \"npm run watch-tsc\" \"npm run watch-deploy\"",
+    "tsc": "tsc",
+    "watch-tsc": "tsc -w",
+    "deploy": "node dist/index.js",
+    "watch-deploy": "nodemon dist/index.js",
+    "server": "concurrently \"npm run format\" \"npm run watch-tsc\" \"npm run watch-deploy\"",
     "start": "npm run deploy",
     "heroku-postbuild": "npm run tsc"
   },
@@ -30,7 +30,9 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "mongodb": "^3.6.3",
     "mongoose": "^5.11.11"
   },
   "husky": {

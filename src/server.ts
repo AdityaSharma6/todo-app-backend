@@ -1,12 +1,22 @@
 import express from 'express';
+import connection from './utils/database';
+
+require('dotenv').config();
 
 const app = express();
 
-app.set('port', process.env.PORT || 3000);
-const port = app.get('port');
+const startServer = async () => {
+  console.log('Starting Server Process...');
+  try {
+    await connection();
+    app.listen(process.env.DEV_APP_PORT, () => {
+      console.log(
+        `Server has started on http://localhost:${process.env.DEV_APP_PORT}`
+      );
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-const server = app.listen(port, () => {
-  console.log(`Server has started on Port ${port}`);
-});
-console.log('Hello');
-export default server;
+export default startServer;
