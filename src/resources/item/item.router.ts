@@ -1,12 +1,22 @@
-import express, { response } from 'express';
-import { request } from 'http';
+import { Router } from 'express';
+import {
+    getAllItems,
+    getOneItem,
+    updateOneItem,
+    createOneItem,
+    deleteOneItem
+} from './item.controller';
 
-let itemsRouter = express.Router();
+const itemsRouter = Router();
 
-// This will represent the Route (/items)
-// Create Read Update Delete
-itemsRouter.get('/', (request, response) => {
-  response.send({ data: 'Welcome to the "GET /items" route' });
-});
+// /items/
+itemsRouter.route('/').get(getAllItems);
 
-export default itemsRouter;
+itemsRouter
+    .route('/:id')
+    .get(getOneItem)
+    .put(updateOneItem)
+    .post(createOneItem)
+    .delete(deleteOneItem);
+
+export { itemsRouter };
