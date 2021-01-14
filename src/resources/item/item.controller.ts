@@ -1,10 +1,7 @@
-import { Request, Response } from 'express';
+import { json, Request, Response } from 'express';
 import { request } from 'http';
+import { CallbackError } from 'mongoose';
 import { IItem, ItemSchema, ItemModel } from './item.model';
-
-export const getAllItems = (request: Request, response: Response) => {
-    response.send('Route: /items \n Verb: GET \n Function: Gets All Items');
-};
 
 // Get One Item
 export const getOneItem = (request: Request, response: Response) => {
@@ -25,13 +22,47 @@ export const updateOneItem = (request: Request, response: Response) => {
 };
 
 // Create One Item
-export const createOneItem = (request: Request, response: Response) => {
-    response.send(
-        'Route: /items/:id \n Verb: POST \n Function: Create One Item'
-    );
+export const createOneItem = (itemModel: typeof ItemModel) => {
+    return async (request: Request, response: Response) => {
+        const item: IItem = request.body;
+        try {
+            const document = await itemModel.create({ ...item });
+            console.log('Creating 1 Item...');
+            return response.status(200).json({
+                message: 'Item Successfully Created',
+                data: { ...item }
+            });
+        } catch (err) {
+            return response.status(400).send(err);
+        }
+    };
 };
 
 // Delete One Item
-export const deleteOneItem = (request: Request, response: Response) => {
-    response.send('Route /items/:id \n Verb: DELETE Function: Delete One Item');
+export const deleteOneItem = (itemModel: typeof ItemModel) => {
+    return async (request: Request, response: Response) => {
+        try {
+            const item = request.body;
+            const document = await itemModel.deleteOne({ ...item });
+            console.log('Deleting 1 Item...');
+            return response.status(200).json({
+                message: 'The specified item has successfully been deleted',
+                data: { ...item }
+            });
+        } catch (error) {
+            return response.status(400).send(error);
+        }
+    };
+};
+
+export const deleteAllItems = (itemModel: typeof ItemModel) => {
+    return async (request: Request, response: Response) => {
+        try {
+            const document = await itemModel.deleteMany({});
+            console.log('Deleting All Items...');
+            return response.json({ message: 'All Items have been deleted' });
+        } catch (err) {
+            return response.status(400).send(err);
+        }
+    };
 };

@@ -13,7 +13,8 @@ export interface IItem extends Document {
 export const ItemSchema: Schema = new Schema({
     itemId: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     listId: {
         type: Number,

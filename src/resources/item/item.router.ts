@@ -1,22 +1,23 @@
 import { Router } from 'express';
 import {
-    getAllItems,
+    deleteAllItems,
     getOneItem,
     updateOneItem,
     createOneItem,
     deleteOneItem
 } from './item.controller';
+import { ItemModel } from './item.model';
 
 const itemsRouter = Router();
 
 // /items/
-itemsRouter.route('/').get(getAllItems);
+itemsRouter.route('/').delete(deleteAllItems(ItemModel));
 
 itemsRouter
     .route('/:id')
     .get(getOneItem)
     .put(updateOneItem)
-    .post(createOneItem)
+    .post(createOneItem(ItemModel))
     .delete(deleteOneItem);
 
 export { itemsRouter };
