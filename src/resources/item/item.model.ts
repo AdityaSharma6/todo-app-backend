@@ -1,38 +1,30 @@
 import mongoose from 'mongoose';
-import { model, Model, Schema, Document } from 'mongoose';
-
-export interface IItem extends Document {
-    itemId: number;
-    listId: number;
-    task: string;
-    description?: string;
-    creationDate: Date;
-    dueDate: Date;
-}
+import { model, Schema } from 'mongoose';
 
 export const ItemSchema: Schema = new Schema({
-    itemId: {
-        type: Number,
-        required: true,
-        unique: true
-    },
     listId: {
-        type: Number,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'List',
         required: true
     },
-    task: {
+    title: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        maxlength: 30
     },
     description: {
-        type: String
+        type: String,
+        trim: true,
+        maxlength: 50
     },
     creationDate: {
-        type: Date
+        type: Date,
+        default: Date.now()
     },
     dueDate: {
         type: Date
     }
 });
 
-export const ItemModel: Model<IItem> = model('Item', ItemSchema);
+export const ItemModel = model('Item', ItemSchema);

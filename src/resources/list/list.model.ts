@@ -1,30 +1,22 @@
-import mongoose, { Schema, Document, Model, model } from 'mongoose';
-import { Tracing } from 'trace_events';
-import { IItem } from '../item/item.model';
-
-export interface IList extends Document {
-    listId: number;
-    listTitle: string;
-    listDescription?: string;
-    itemCollection: IItem[];
-    creationDate: Date;
-}
-
+import { Schema, model } from 'mongoose';
 export const ListSchema: Schema = new Schema({
-    listId: {
-        type: Number,
-        required: true,
-        unique: true
-    },
-    listTitle: {
+    title: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        maxlength: 30
     },
-    listDescription: {
-        type: String
+    description: {
+        type: String,
+        trim: true,
+        maxlength: 50
     },
     creationDate: {
         type: Date,
         required: true
     }
 });
+
+ListSchema.index({ title: 1 }, { unique: true });
+
+export const ListModel = model('List', ListSchema);
