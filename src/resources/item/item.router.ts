@@ -15,9 +15,9 @@ itemsRouter.route('/').delete(deleteAllItems(ItemModel));
 
 itemsRouter
     .route('/:id')
-    .get(getOneItem)
-    .put(updateOneItem)
+    .get(getOneItem(ItemModel))
+    .put(updateOneItem(ItemModel))
     .post(createOneItem(ItemModel))
-    .delete(deleteOneItem);
+    .delete(deleteOneItem(ItemModel));
 
 export { itemsRouter };
