@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { getTodaysDate } from '../../utils/getTodayDate';
 export const ListSchema: Schema = new Schema({
     title: {
         type: String,
@@ -13,8 +14,8 @@ export const ListSchema: Schema = new Schema({
         maxlength: 50
     },
     creationDate: {
-        type: Date,
-        required: true
+        type: String,
+        default: getTodaysDate()
     }
 });
 
