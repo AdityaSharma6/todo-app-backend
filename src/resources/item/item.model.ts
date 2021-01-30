@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import { model, Schema } from 'mongoose';
+import { getTodaysDate } from '../../utils/getTodayDate';
 
 export const ItemSchema: Schema = new Schema({
-    listId: {
+    _listId: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'List',
         required: true
@@ -19,11 +20,15 @@ export const ItemSchema: Schema = new Schema({
         maxlength: 50
     },
     creationDate: {
-        type: Date,
-        default: Date.now()
+        type: String,
+        default: getTodaysDate()
     },
     dueDate: {
         type: Date
+    },
+    isComplete: {
+        type: Boolean,
+        default: false
     }
 });
 
