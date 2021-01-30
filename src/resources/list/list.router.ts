@@ -1,16 +1,24 @@
 import { Router } from 'express';
-import { createOneItem, deleteAllItems } from '../item/item.controller';
-import { deleteOneList, getOneList } from './list.controller';
+import {
+    createOneList,
+    deleteAllLists,
+    deleteOneList,
+    readOneList,
+    updateOneList
+} from './list.controller';
 import { ListModel } from './list.model';
 
 const listRouter = Router();
 
-listRouter.route('/').delete(deleteAllItems(ListModel));
+// --> /list/
+listRouter.route('/').delete(deleteAllLists(ListModel));
 
+// --> /list/:title
 listRouter
-    .route('/:id')
-    .get(getOneList(ListModel))
-    .post(createOneItem(ListModel))
-    .delete(deleteOneList(ListModel));
+    .route('/:title')
+    .post(createOneList(ListModel)) // C
+    .get(readOneList(ListModel)) // R
+    .put(updateOneList(ListModel)) // U
+    .delete(deleteOneList(ListModel)); // D
 
 export { listRouter };
