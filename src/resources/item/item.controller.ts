@@ -9,26 +9,8 @@ export const getOneItem = (itemModel: typeof ItemModel) => {
             const document = await itemModel.findById({ _id: item._id });
             console.log('Getting 1 Item...');
             return response.status(200).json({
-                message: 'The specified item has been found'
-            });
-        } catch (error) {
-            return response.status(400).send(error);
-        }
-    };
-};
-
-// Update One Item - Need to test
-export const updateOneItem = (itemModel: typeof ItemModel) => {
-    return async (request: Request, response: Response) => {
-        const item = request.body;
-        try {
-            const document = await itemModel.findOneAndUpdate(item.itemId, {
-                ...item
-            });
-            console.log('Updating 1 Item..');
-            return response.status(200).json({
-                message: 'The specified item has been updated!',
-                data: { ...document }
+                message: 'The specified item has been found',
+                data: document
             });
         } catch (error) {
             return response.status(400).send(error);
@@ -41,14 +23,57 @@ export const createOneItem = (itemModel: typeof ItemModel) => {
     return async (request: Request, response: Response) => {
         const item = request.body;
         try {
-            const document = await itemModel.create({ ...item });
+            const document = await itemModel.create(item);
             console.log('Creating 1 Item...');
             return response.status(200).json({
                 message: 'Item Successfully Created',
-                data: { ...item }
+                data: document
             });
         } catch (err) {
             return response.status(400).send(err);
+        }
+    };
+};
+
+export const readAllItemsFromList = (itemModel: typeof ItemModel) => {
+    return async (request: Request, response: Response) => {
+        try {
+            const document = await itemModel
+                .find()
+                .populate('List', {
+                    match: { _id: { $eq: request.body._listId } }
+                });
+            if (document) {
+                console.log('Retrieving all items');
+                return response.status(200).json({
+                    message:
+                        'All items within this particular list have been retrieved',
+                    data: document
+                });
+            }
+        } catch (error) {
+            return response.status(400).send(error);
+        }
+    };
+};
+
+// Update One Item - Need to test
+export const updateOneItem = (itemModel: typeof ItemModel) => {
+    return async (request: Request, response: Response) => {
+        const item = request.body;
+        try {
+            const document = await itemModel.findOneAndUpdate(
+                item.itemId,
+                item,
+                { new: true }
+            );
+            console.log('Updating 1 Item..');
+            return response.status(200).json({
+                message: 'The specified item has been updated!',
+                data: document
+            });
+        } catch (error) {
+            return response.status(400).send(error);
         }
     };
 };
