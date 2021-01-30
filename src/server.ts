@@ -1,12 +1,13 @@
-import express, { Router } from 'express';
+import express from 'express';
+import cors from 'cors';
 import { itemsRouter } from './resources/item/item.router';
 import { listRouter } from './resources/list/list.router';
 import connection from './utils/database';
 
 require('dotenv').config();
 const app = express();
-const router = Router();
 
+app.use(cors());
 app.use(express.json());
 
 app.use('/items', itemsRouter);
