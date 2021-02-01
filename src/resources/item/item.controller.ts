@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import { ItemModel } from './item.model';
 
-// Get One Item - Need to test
-export const getOneItem = (itemModel: typeof ItemModel) => {
+// GET Request
+export const readOneItem = (itemModel: typeof ItemModel) => {
     return async (request: Request, response: Response) => {
-        const item = request.body;
         try {
-            const document = await itemModel.findById({ _id: item._id });
+            const document = await itemModel.findById({
+                _id: request.params._id
+            });
             console.log('Getting 1 Item...');
             return response.status(200).json({
                 message: 'The specified item has been found',
@@ -18,12 +19,11 @@ export const getOneItem = (itemModel: typeof ItemModel) => {
     };
 };
 
-// Create One Item
+// POST Request
 export const createOneItem = (itemModel: typeof ItemModel) => {
     return async (request: Request, response: Response) => {
-        const item = request.body;
         try {
-            const document = await itemModel.create(item);
+            const document = await itemModel.create(request.body);
             console.log('Creating 1 Item...');
             return response.status(200).json({
                 message: 'Item Successfully Created',
@@ -31,6 +31,44 @@ export const createOneItem = (itemModel: typeof ItemModel) => {
             });
         } catch (err) {
             return response.status(400).send(err);
+        }
+    };
+};
+
+// Update Request
+export const updateOneItem = (itemModel: typeof ItemModel) => {
+    return async (request: Request, response: Response) => {
+        try {
+            const document = await itemModel.findOneAndUpdate(
+                request.body._id,
+                request.body,
+                { new: true }
+            );
+            console.log('Updating 1 Item..');
+            return response.status(200).json({
+                message: 'The specified item has been updated!',
+                data: document
+            });
+        } catch (error) {
+            return response.status(400).send(error);
+        }
+    };
+};
+
+// DELETE Request - currently unneeded
+export const deleteOneItem = (itemModel: typeof ItemModel) => {
+    return async (request: Request, response: Response) => {
+        try {
+            const document = await itemModel.deleteOne({
+                _id: request.params._id
+            });
+            console.log('Deleting 1 Item...');
+            return response.status(200).json({
+                message: 'The specified item has successfully been deleted',
+                data: document
+            });
+        } catch (error) {
+            return response.status(400).send(error);
         }
     };
 };
@@ -60,50 +98,16 @@ export const readAllItemsFromList = (itemModel: typeof ItemModel) => {
     };
 };
 
-// Update One Item - Need to test
-export const updateOneItem = (itemModel: typeof ItemModel) => {
-    return async (request: Request, response: Response) => {
-        const item = request.body;
-        try {
-            const document = await itemModel.findOneAndUpdate(
-                item.itemId,
-                item,
-                { new: true }
-            );
-            console.log('Updating 1 Item..');
-            return response.status(200).json({
-                message: 'The specified item has been updated!',
-                data: document
-            });
-        } catch (error) {
-            return response.status(400).send(error);
-        }
-    };
-};
-
-// Delete One Item
-export const deleteOneItem = (itemModel: typeof ItemModel) => {
-    return async (request: Request, response: Response) => {
-        try {
-            const item = request.body;
-            const document = await itemModel.deleteOne({ ...item });
-            console.log('Deleting 1 Item...');
-            return response.status(200).json({
-                message: 'The specified item has successfully been deleted',
-                data: { ...item }
-            });
-        } catch (error) {
-            return response.status(400).send(error);
-        }
-    };
-};
-
+// DELETE Request - currently unneeded
 export const deleteAllItems = (itemModel: typeof ItemModel) => {
     return async (request: Request, response: Response) => {
         try {
             const document = await itemModel.deleteMany({});
             console.log('Deleting All Items...');
-            return response.json({ message: 'All Items have been deleted' });
+            return response.json({
+                message: 'All Items have been deleted',
+                data: document
+            });
         } catch (err) {
             return response.status(400).send(err);
         }
