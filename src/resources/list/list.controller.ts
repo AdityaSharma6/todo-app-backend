@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { ListModel } from './list.model';
 
+// POST Request
 export const createOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
-        const list = request.body;
         try {
-            const document = await listModel.create({ ...list });
+            const document = await listModel.create(request.body);
             return response.status(200).json({
                 message: 'This list has successfully been created',
                 data: document
@@ -16,13 +16,13 @@ export const createOneList = (listModel: typeof ListModel) => {
     };
 };
 
+// GET Request
 export const readOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
-        const list = request.params;
-        console.log(request.params);
-
         try {
-            const document = await listModel.findOne(list);
+            const document = await listModel.findOne({
+                _id: request.params._id
+            });
             if (document) {
                 console.log(document);
                 return response.status(200).json({
@@ -41,13 +41,15 @@ export const readOneList = (listModel: typeof ListModel) => {
     };
 };
 
+// PUT Request
 export const updateOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
-        const list = request.body;
         try {
-            const document = await listModel.findByIdAndUpdate(list._id, list, {
-                new: true
-            });
+            const document = await listModel.findByIdAndUpdate(
+                request.body._id,
+                request.body,
+                { new: true }
+            );
             if (document) {
                 return response.status(200).json({
                     message: 'The specified list has successfully been updated',
@@ -64,11 +66,13 @@ export const updateOneList = (listModel: typeof ListModel) => {
     };
 };
 
+// DELETE Request
 export const deleteOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
-        const list = request.body;
         try {
-            const document = await listModel.findByIdAndDelete(list._id);
+            const document = await listModel.findByIdAndDelete(
+                request.params._id
+            );
             if (document !== null) {
                 return response.status(200).json({
                     message:
