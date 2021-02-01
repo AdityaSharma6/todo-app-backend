@@ -35,14 +35,17 @@ export const createOneItem = (itemModel: typeof ItemModel) => {
     };
 };
 
+// GET Request
 export const readAllItemsFromList = (itemModel: typeof ItemModel) => {
     return async (request: Request, response: Response) => {
         try {
-            const document = await itemModel
-                .find()
-                .populate('List', {
-                    match: { _id: { $eq: request.body._listId } }
-                });
+            // const document = await itemModel.find().populate('List', {
+            //     match: { _id: { $eq: request.body._listId } }
+            // });
+            // Why didn't populate work?
+            const document = await itemModel.find({
+                _listId: request.query._listId
+            });
             if (document) {
                 console.log('Retrieving all items');
                 return response.status(200).json({
