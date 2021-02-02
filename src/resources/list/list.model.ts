@@ -3,7 +3,6 @@ import { getTodaysDate } from '../../utils/getTodayDate';
 export const ListSchema: Schema = new Schema({
     title: {
         type: String,
-        required: true,
         trim: true,
         maxlength: 30,
         unique: true

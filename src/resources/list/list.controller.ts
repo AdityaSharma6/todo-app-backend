@@ -4,6 +4,7 @@ import { ListModel } from './list.model';
 // POST Request
 export const createOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
+        console.log(request);
         try {
             const document = await listModel.create(request.body);
             return response.status(200).json({
@@ -47,7 +48,7 @@ export const updateOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
         try {
             const document = await listModel.findByIdAndUpdate(
-                request.body._id,
+                request.params._id,
                 request.body,
                 { new: true }
             );

@@ -9,9 +9,10 @@ import { ListModel } from './list.model';
 
 const listRouter = Router();
 
+listRouter.route('/').post(createOneList(ListModel)); // C)
+
 listRouter
     .route('/:title')
-    .post(createOneList(ListModel)) // C
     .get(readOneList(ListModel)) // R
     .put(updateOneList(ListModel)) // U
     .delete(deleteOneList(ListModel)); // D
