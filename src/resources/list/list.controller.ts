@@ -47,8 +47,8 @@ export const readOneList = (listModel: typeof ListModel) => {
 export const updateOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
         try {
-            const document = await listModel.findByIdAndUpdate(
-                request.params._id,
+            const document = await listModel.findOneAndUpdate(
+                { title: request.params.title },
                 request.body,
                 { new: true }
             );
@@ -72,9 +72,9 @@ export const updateOneList = (listModel: typeof ListModel) => {
 export const deleteOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
         try {
-            const document = await listModel.findByIdAndDelete(
-                request.params._id
-            );
+            const document = await listModel.findOneAndDelete({
+                title: request.params.title
+            });
             if (document !== null) {
                 return response.status(200).json({
                     message:
