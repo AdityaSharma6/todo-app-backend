@@ -8,11 +8,11 @@ import { ItemModel } from './item.model';
 
 const itemsRouter = Router();
 
-itemsRouter.route('/').get(readAllItemsFromList(ItemModel));
-
 itemsRouter
-    .route('/:_id')
-    .put(updateOneItem(ItemModel))
-    .post(createOneItem(ItemModel));
+    .route('/')
+    .post(createOneItem(ItemModel))
+    .get(readAllItemsFromList(ItemModel));
+
+itemsRouter.route('/:_id').put(updateOneItem(ItemModel));
 
 export { itemsRouter };

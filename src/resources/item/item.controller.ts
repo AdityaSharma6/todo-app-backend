@@ -1,24 +1,6 @@
 import { Request, Response } from 'express';
 import { ItemModel } from './item.model';
 
-// GET Request - currently unneeded
-export const readOneItem = (itemModel: typeof ItemModel) => {
-    return async (request: Request, response: Response) => {
-        try {
-            const document = await itemModel.findById({
-                _id: request.params._id
-            });
-            console.log('Getting 1 Item...');
-            return response.status(200).json({
-                message: 'The specified item has been found',
-                data: document
-            });
-        } catch (error) {
-            return response.status(400).send(error);
-        }
-    };
-};
-
 // POST Request
 export const createOneItem = (itemModel: typeof ItemModel) => {
     return async (request: Request, response: Response) => {
@@ -34,6 +16,24 @@ export const createOneItem = (itemModel: typeof ItemModel) => {
         } catch (err) {
             console.log(err);
             return response.status(400).send(err);
+        }
+    };
+};
+
+// GET Request - currently unneeded
+export const readOneItem = (itemModel: typeof ItemModel) => {
+    return async (request: Request, response: Response) => {
+        try {
+            const document = await itemModel.findById({
+                _id: request.params._id
+            });
+            console.log('Getting 1 Item...');
+            return response.status(200).json({
+                message: 'The specified item has been found',
+                data: document
+            });
+        } catch (error) {
+            return response.status(400).send(error);
         }
     };
 };
