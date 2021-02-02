@@ -10,7 +10,6 @@ export const ItemSchema: Schema = new Schema({
     },
     title: {
         type: String,
-        required: true,
         trim: true,
         maxlength: 30
     },

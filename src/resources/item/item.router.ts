@@ -1,23 +1,18 @@
 import { Router } from 'express';
 import {
-    deleteAllItems,
-    getOneItem,
     updateOneItem,
     createOneItem,
-    deleteOneItem
+    readAllItemsFromList
 } from './item.controller';
 import { ItemModel } from './item.model';
 
 const itemsRouter = Router();
 
-// /items/
-itemsRouter.route('/').delete(deleteAllItems(ItemModel));
+itemsRouter.route('/').get(readAllItemsFromList(ItemModel));
 
 itemsRouter
-    .route('/:id')
-    .get(getOneItem(ItemModel))
+    .route('/:_id')
     .put(updateOneItem(ItemModel))
-    .post(createOneItem(ItemModel))
-    .delete(deleteOneItem(ItemModel));
+    .post(createOneItem(ItemModel));
 
 export { itemsRouter };

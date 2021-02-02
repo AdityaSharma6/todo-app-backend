@@ -19,9 +19,10 @@ export const createOneList = (listModel: typeof ListModel) => {
 // GET Request
 export const readOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
+        console.log(request);
         try {
             const document = await listModel.findOne({
-                _id: request.params._id
+                title: request.params.title
             });
             if (document) {
                 console.log(document);
@@ -91,6 +92,7 @@ export const deleteOneList = (listModel: typeof ListModel) => {
     };
 };
 
+// DELETE Request
 export const deleteAllLists = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
         try {

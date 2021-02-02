@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import {
     createOneList,
-    deleteAllLists,
     deleteOneList,
     readOneList,
     updateOneList
@@ -10,10 +9,6 @@ import { ListModel } from './list.model';
 
 const listRouter = Router();
 
-// --> /list/
-listRouter.route('/').delete(deleteAllLists(ListModel));
-
-// --> /list/:title
 listRouter
     .route('/:title')
     .post(createOneList(ListModel)) // C

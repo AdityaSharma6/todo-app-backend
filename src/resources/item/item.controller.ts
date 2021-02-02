@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ItemModel } from './item.model';
 
-// GET Request
+// GET Request - currently unneeded
 export const readOneItem = (itemModel: typeof ItemModel) => {
     return async (request: Request, response: Response) => {
         try {
@@ -22,14 +22,17 @@ export const readOneItem = (itemModel: typeof ItemModel) => {
 // POST Request
 export const createOneItem = (itemModel: typeof ItemModel) => {
     return async (request: Request, response: Response) => {
+        //console.log(request);
         try {
             const document = await itemModel.create(request.body);
+            console.log(document);
             console.log('Creating 1 Item...');
             return response.status(200).json({
                 message: 'Item Successfully Created',
                 data: document
             });
         } catch (err) {
+            console.log(err);
             return response.status(400).send(err);
         }
     };
@@ -39,8 +42,8 @@ export const createOneItem = (itemModel: typeof ItemModel) => {
 export const updateOneItem = (itemModel: typeof ItemModel) => {
     return async (request: Request, response: Response) => {
         try {
-            const document = await itemModel.findOneAndUpdate(
-                request.body._id,
+            const document = await itemModel.findByIdAndUpdate(
+                request.params._id,
                 request.body,
                 { new: true }
             );
