@@ -4,10 +4,9 @@ import { ListModel } from './list.model';
 // POST Request
 export const createOneList = (listModel: typeof ListModel) => {
     return async (request: Request, response: Response) => {
-        console.log(request);
         try {
             const document = await listModel.create(request.body);
-            return response.status(200).json({
+            return response.status(201).json({
                 message: 'This list has successfully been created',
                 data: document
             });
@@ -34,7 +33,7 @@ export const readOneList = (listModel: typeof ListModel) => {
                 });
             }
 
-            return response.status(400).json({
+            return response.status(404).json({
                 message: 'The requested list does not exist'
             });
         } catch (error) {
@@ -59,7 +58,7 @@ export const updateOneList = (listModel: typeof ListModel) => {
                 });
             }
 
-            return response.status(400).json({
+            return response.status(404).json({
                 message: 'The specified list was unable to be updated.'
             });
         } catch (error) {

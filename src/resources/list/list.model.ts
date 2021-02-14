@@ -4,7 +4,7 @@ export const ListSchema: Schema = new Schema({
     title: {
         type: String,
         trim: true,
-        maxlength: 30,
+        maxlength: 40,
         unique: true
     },
     description: {
